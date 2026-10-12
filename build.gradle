@@ -1,0 +1,43 @@
+plugins {
+    id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group = 'com.clipboardoverhall'
+version = '1.0-SNAPSHOT'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    // Global keyboard and mouse hook
+    implementation 'com.github.kwhat:jnativehook:2.2.2'
+
+    // FlatLaf modern styling (macOS integration built-in)
+    implementation 'com.formdev:flatlaf:3.4'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+}
+
+application {
+    mainClass = 'com.clipboardoverhall.Main'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+// Ensure shadowJar includes everything cleanly
+shadowJar {
+    archiveClassifier.set('all')
+    mergeServiceFiles()
+}
